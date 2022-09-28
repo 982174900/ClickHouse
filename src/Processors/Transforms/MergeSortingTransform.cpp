@@ -47,7 +47,7 @@ public:
     void consume(Chunk chunk) override
     {
         Block block = getInputPort().getHeader().cloneWithColumns(chunk.detachColumns());
-        tmp_stream.write(std::move(block));
+        tmp_stream.write(block);
     }
 
     Chunk generate() override
@@ -174,8 +174,9 @@ void MergeSortingTransform::consume(Chunk chunk)
       */
     if (max_bytes_before_external_sort && sum_bytes_in_blocks > max_bytes_before_external_sort)
     {
-        size_t size = sum_bytes_in_blocks + min_free_disk_space;
-        auto & tmp_stream = tmp_data->createStream(header_without_constants, CurrentMetrics::TemporaryFilesForSort, size);
+        /// If there's less free disk space than reserve_size, an exception will be thrown
+        size_t reserve_size = sum_bytes_in_blocks + min_free_disk_space;
+        auto & tmp_stream = tmp_data->createStream(header_without_constants, CurrentMetrics::TemporaryFilesForSort, reserve_size);
 
         merge_sorter = std::make_unique<MergeSorter>(header_without_constants, std::move(chunks), description, max_merged_block_size, limit);
         auto current_processor = std::make_shared<BufferingToFileTransform>(header_without_constants, tmp_stream, log);
