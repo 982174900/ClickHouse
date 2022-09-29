@@ -1,11 +1,11 @@
 ---
 slug: /zh/sql-reference/functions/string-search-functions
 ---
-# 字符串搜索函数 {#zi-fu-chuan-sou-suo-han-shu}
+# 用于在字符串中搜索的函数 {#zi-fu-chuan-sou-suo-han-shu}
 
-下列所有函数在默认的情况下区分大小写。对于不区分大小写的搜索，存在单独的变体。
+下列所有函数在默认的情况下区分大小写。对于不区分大小写的搜索，存在单独的函数。
 
-## 位置（大海捞针），定位（大海捞针) {#positionhaystack-needle-locatehaystack-needle}
+## position(haystack, needle), locate(haystack, needle) {#positionhaystack-needle-locatehaystack-needle}
 
 在字符串`haystack`中搜索子串`needle`。
 返回子串的位置（以字节为单位），从1开始，如果未找到子串，则返回0。
